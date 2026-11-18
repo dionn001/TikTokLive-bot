@@ -1,5 +1,6 @@
 import os
 import asyncio
+import sys
 from TikTokLive import TikTokLiveClient
 from TikTokLive.events import ConnectEvent, GiftEvent
 
@@ -25,12 +26,22 @@ async def on_gift(event: GiftEvent):
 
 
 async def cmd_listener():
+    # Check if a real interactive terminal/keyboard is available
+    if not sys.stdin.isatty():
+        print("[CMD] Running in headless environment (Railway). Terminal commands are disabled, monitoring gifts only.")
+        # Keep this coroutine running safely in the background
+        await asyncio.Event().wait()
+        return
+
     print("[CMD] Interactive terminal ready! Type a command starting with '/' (e.g. /help, /stop):")
     loop = asyncio.get_running_loop()
     
     while True:
-        # Read user input asynchronously without blocking the TikTok bot
-        user_input = await loop.run_in_executor(None, input, "> ")
+        try:
+            user_input = await loop.run_in_executor(None, input, "> ")
+        except (EOFError, RuntimeError):
+            break
+            
         command = user_input.strip().lower()
 
         if command == "/stop":
