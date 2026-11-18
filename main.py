@@ -1,5 +1,4 @@
 import os
-import asyncio
 from TikTokLive import TikTokLiveClient
 from TikTokLive.events import ConnectEvent, GiftEvent, CommentEvent
 
@@ -37,13 +36,6 @@ async def on_comment(event: CommentEvent):
         print(f"[CHAT CMD] {user} requested help via TikTok chat.")
 
 
-async def main():
-    # Run the TikTok client continuously
-    await client.start()
-
-
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        print("\n[SYSTEM] Bot stopped manually.")
+    # Run the TikTok Live client blocking the main thread safely
+    client.run()
