@@ -2,17 +2,13 @@ import os
 from TikTokLive import TikTokLiveClient
 from TikTokLive.events import ConnectEvent, GiftEvent, CommentEvent
 
-# Retrieve the TikTok handle from Railway environment variables (or use default)
 TIKTOK_HANDLE = os.getenv("TIKTOK_HANDLE", "roblox_dev_name_dionn001")
 
-# Initialize the TikTok Live client
 client: TikTokLiveClient = TikTokLiveClient(unique_id=TIKTOK_HANDLE)
-
 
 @client.on(ConnectEvent)
 async def on_connect(event: ConnectEvent):
     print(f"[SYSTEM] Connected to {event.unique_id}'s livestream!")
-
 
 @client.on(GiftEvent)
 async def on_gift(event: GiftEvent):
@@ -21,10 +17,10 @@ async def on_gift(event: GiftEvent):
     elif not event.gift.streakable:
         print(f"[GIFT] Thank you {event.user.nickname} for sending a {event.gift.name}!")
 
-
 @client.on(CommentEvent)
 async def on_comment(event: CommentEvent):
-    # Check if a viewer types a command starting with '/' in the TikTok chat
+    print(f"[CHAT DEBUG] {event.user.nickname}: {event.comment}")
+    
     message = event.comment.strip().lower()
     user = event.user.nickname
     
@@ -35,7 +31,5 @@ async def on_comment(event: CommentEvent):
     elif message == "/help":
         print(f"[CHAT CMD] {user} requested help via TikTok chat.")
 
-
 if __name__ == "__main__":
-    # Run the TikTok Live client blocking the main thread safely
     client.run()
