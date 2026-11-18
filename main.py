@@ -1,8 +1,7 @@
 import os
 import asyncio
-import sys
 from TikTokLive import TikTokLiveClient
-from TikTokLive.events import ConnectEvent, GiftEvent, ChatEvent
+from TikTokLive.events import ConnectEvent, GiftEvent, CommentEvent
 
 # Retrieve the TikTok handle from Railway environment variables (or use default)
 TIKTOK_HANDLE = os.getenv("TIKTOK_HANDLE", "roblox_dev_name_dionn001")
@@ -24,8 +23,8 @@ async def on_gift(event: GiftEvent):
         print(f"[GIFT] Thank you {event.user.nickname} for sending a {event.gift.name}!")
 
 
-@client.on(ChatEvent)
-async def on_chat(event: ChatEvent):
+@client.on(CommentEvent)
+async def on_comment(event: CommentEvent):
     # Check if a viewer types a command starting with '/' in the TikTok chat
     message = event.comment.strip().lower()
     user = event.user.nickname
