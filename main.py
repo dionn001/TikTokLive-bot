@@ -32,4 +32,4 @@ async def on_comment(event: CommentEvent):
         print(f"[CHAT CMD] {user} requested help via TikTok chat.")
 
 if __name__ == "__main__":
-    client.run()
+    put hear client.run() and stop the weding i mean del del del 
